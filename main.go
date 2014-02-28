@@ -26,7 +26,7 @@ func monitor(poke chan bool) {
 		select {
 		case <-poke:
 			// a read from ch has occurred
-		case <-time.Sleep(time.Minute):
+		case <-time.After(time.Minute):
 			// the read from ch has timed out
 		}
 	}
