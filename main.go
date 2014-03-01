@@ -9,9 +9,10 @@ import (
 )
 
 func main() {
-	if len(os.Args) == 1 {
+	if len(os.Args) == 1 || len(os.Args) == 0 {
 		log.Fatal("Please put a command after this.")
 	}
+
 	cmd := exec.Command(os.Args[1], os.Args[2:]...)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
