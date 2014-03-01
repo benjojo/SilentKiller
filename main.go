@@ -21,7 +21,7 @@ func main() {
 	}
 	buf := make([]byte, 1024)
 	pkc := make(chan bool)
-	go monitor(pkc)
+	go monitor(pkc, cmd)
 	for {
 		n, e := stdout.Read(buf)
 		if e != nil {
@@ -32,7 +32,7 @@ func main() {
 	}
 }
 
-func monitor(poke chan bool) {
+func monitor(poke chan bool, cmd *exec.Cmd) {
 	for {
 		select {
 		case <-poke:
@@ -40,6 +40,7 @@ func monitor(poke chan bool) {
 		case <-time.After(time.Second * 5):
 			// the read from ch has timed out
 			log.Fatal("Timed out")
+			cmd.Process.Kill()
 			os.Exit(0)
 		}
 	}
