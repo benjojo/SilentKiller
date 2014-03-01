@@ -23,10 +23,12 @@ func main() {
 	buf := make([]byte, 1024)
 	pkc := make(chan bool)
 	go monitor(pkc, cmd)
+
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	go func() {
 		for sig := range c {
+			log.Printf("Caught %s exiting", sig)
 			cmd.Process.Kill()
 			os.Exit(0)
 		}
