@@ -5,6 +5,8 @@ A tool that will kill the process you launch if it falls silent
 
 The default timeout is 15 secs
 
+you can change this with the -t <int> option
+
 Usage:
 ```
 ben@daring:~/SilentKiller$ ./SilentKiller sleep 10
