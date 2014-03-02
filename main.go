@@ -12,7 +12,9 @@ import (
 func main() {
 	logger := log.New(os.Stderr, "", 0)
 	if len(os.Args) == 1 || len(os.Args) == 0 {
-		logger.Fatal("Please put a command after this.")
+		logger.Println("Example")
+		logger.Println("$SilentKiller sleep 16")
+		logger.Fatal("$SilentKiller -t 10 sleep 16")
 	}
 
 	var waittime int = 15
