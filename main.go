@@ -10,8 +10,9 @@ import (
 )
 
 func main() {
+	logger := log.New(os.Stderr, "", 0)
 	if len(os.Args) == 1 || len(os.Args) == 0 {
-		log.Fatal("Please put a command after this.")
+		logger.Fatal("Please put a command after this.")
 	}
 
 	var waittime int = 15
@@ -20,7 +21,7 @@ func main() {
 		cmd = exec.Command(os.Args[3], os.Args[4:]...)
 		i, e := strconv.ParseInt(os.Args[2], 10, 64)
 		if e != nil {
-			log.Fatalf("Cannot turn %s into a number", os.Args[2])
+			logger.Fatalf("Cannot turn %s into a number", os.Args[2])
 		}
 		waittime = int(i)
 	} else {
@@ -29,10 +30,10 @@ func main() {
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 	if err := cmd.Start(); err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 	buf := make([]byte, 1024)
 	pkc := make(chan bool)
@@ -42,7 +43,7 @@ func main() {
 	signal.Notify(c, os.Interrupt)
 	go func() {
 		for sig := range c {
-			log.Printf("Caught %s exiting", sig)
+			logger.Printf("Caught %s exiting", sig)
 			cmd.Process.Kill()
 			os.Exit(0)
 		}
@@ -58,13 +59,15 @@ func main() {
 }
 
 func monitor(poke chan bool, cmd *exec.Cmd, waittime int) {
+	logger := log.New(os.Stderr, "", 0)
+
 	for {
 		select {
 		case <-poke:
 			// a read from ch has occurred
 		case <-time.After(time.Second * time.Duration(waittime)):
 			// the read from ch has timed out
-			log.Fatal("Timed out")
+			logger.Fatal("Timed out")
 			cmd.Process.Kill()
 			os.Exit(0)
 		}
