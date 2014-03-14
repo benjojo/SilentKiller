@@ -31,6 +31,8 @@ func main() {
 	}
 
 	stdout, err := cmd.StdoutPipe()
+	stdin, _ := cmd.StdinPipe()
+
 	if err != nil {
 		logger.Fatal(err)
 	}
@@ -50,6 +52,17 @@ func main() {
 			os.Exit(0)
 		}
 	}()
+	stdinbuf := make([]byte, 1024)
+	go func() {
+		for {
+			n, e := os.Stdin.Read(stdinbuf)
+			if e != nil {
+				os.Exit(1)
+			}
+			stdin.Write(stdinbuf[:n])
+		}
+	}()
+
 	for {
 		n, e := stdout.Read(buf)
 		if e != nil {
