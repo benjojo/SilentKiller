@@ -57,7 +57,7 @@ func main() {
 		for {
 			n, e := os.Stdin.Read(stdinbuf)
 			if e != nil {
-				os.Exit(1)
+				os.Exit(0)
 			}
 			stdin.Write(stdinbuf[:n])
 		}
@@ -66,7 +66,7 @@ func main() {
 	for {
 		n, e := stdout.Read(buf)
 		if e != nil {
-			os.Exit(1)
+			os.Exit(0)
 		}
 		os.Stdout.Write(buf[:n])
 		pkc <- true
