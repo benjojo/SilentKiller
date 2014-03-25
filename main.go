@@ -13,8 +13,8 @@ func main() {
 	logger := log.New(os.Stderr, "", 0)
 	if len(os.Args) == 1 || len(os.Args) == 0 {
 		logger.Println("Example")
-		logger.Println("$SilentKiller sleep 16")
-		logger.Fatal("$SilentKiller -t 10 sleep 16")
+		logger.Println("$SilentKiller sleep 16 #will kill before the sleep ends")
+		logger.Fatal("$SilentKiller -t 10 sleep 16 #Will change the default timeout from 15s to 10s")
 	}
 
 	var waittime int = 15
