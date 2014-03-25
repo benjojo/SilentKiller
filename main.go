@@ -49,7 +49,7 @@ func main() {
 		for sig := range c {
 			logger.Printf("Caught %s exiting", sig)
 			cmd.Process.Kill()
-			os.Exit(0)
+			os.Exit(1)
 		}
 	}()
 	stdinbuf := make([]byte, 1024)
